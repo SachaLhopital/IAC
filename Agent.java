@@ -6,12 +6,12 @@ import java.util.Map;
  */
 public class Agent {
 
-    public class Interaction{
+    public static class Interaction{
 
         Experience exp;
         Result res;
 
-        Interaction(Experience e, Result r) {
+        public Interaction(Experience e, Result r) {
             exp = e;
             res = r;
         }
@@ -34,7 +34,6 @@ public class Agent {
         for(Map.Entry<Interaction, Integer> entry : interactions.entrySet()) {
 
             //?
-
         }
 
         return null;

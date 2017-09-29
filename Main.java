@@ -17,10 +17,15 @@ public class Main {
         agent.addPossibility(e1);
         agent.addPossibility(e2);
 
-        env.addRule(e1, r1, 1);
-        env.addRule(e1, r2, -1);
-        env.addRule(e2, r1, 1);
-        env.addRule(e2, r2, -1);
+        /*Agent.Interaction i11 = new Agent.Interaction(e1, r1);
+        Agent.Interaction i12 = new Agent.Interaction(e1, r2);
+        Agent.Interaction i21 = new Agent.Interaction(e2, r1);
+        Agent.Interaction i22 = new Agent.Interaction(e2, r2);*/
+
+        env.addRule1(e1, r1, 1);
+        env.addRule2(e1, r2, -1);
+        env.addRule1(e2, r1, 1);
+        env.addRule2(e2, r2, -1);
 
         while(count != 50) {
 
