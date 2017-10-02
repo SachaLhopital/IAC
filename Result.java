@@ -3,7 +3,7 @@
  */
 public class Result {
 
-    private String label;
+    /*private String label;
 
     public Result(String l) {
         label = l;
@@ -12,5 +12,5 @@ public class Result {
 
     public String toString() {
         return "\n" + label + "\n value : " + value;
-    }
+    }*/
 }

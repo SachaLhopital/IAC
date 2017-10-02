@@ -3,7 +3,7 @@
  */
 public class Experience {
 
-    private String label;
+    /*private String label;
 
     public Experience(String l) {
         label = l;
@@ -11,5 +11,5 @@ public class Experience {
 
     public String toString() {
         return label;
-    }
+    }*/
 }

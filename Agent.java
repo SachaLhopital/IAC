@@ -1,41 +1,36 @@
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Sachouw on 28/09/2017.
  */
 public class Agent {
 
-    public static class Interaction{
+    private Motivation motivation;
+    private String lastExperience;
+    private String bestExperience;
 
-        Experience exp;
-        Result res;
+    public Agent(Motivation m) {
+        lastExperience = null;
+        motivation = m;
+        bestExperience = "2";
+    }
 
-        public Interaction(Experience e, Result r) {
-            exp = e;
-            res = r;
+    public String chooseExperience() {
+
+        if((int)(Math.random()*motivation.getNbRules()) > 1) {
+            System.out.println("Choix aléatoire");
+            lastExperience = motivation.getRandomAction();
+        } else {
+            System.out.println("Meilleur choix");
+            lastExperience = bestExperience;
         }
 
+        return lastExperience;
     }
 
-    private Experience[] experiences;
-    private HashMap<Interaction, Integer> interactions;
+    public void updateReward(int result) {
+        int motivationReward = motivation.getReward(lastExperience);
 
-    public Agent() {
-        interactions = new HashMap<>();
-    }
-
-    public void addPossibility(Experience e) {
-        experiences[experiences.length] = e;
-    }
-
-    public Experience chooseExperience(Result r) {
-
-        for(Map.Entry<Interaction, Integer> entry : interactions.entrySet()) {
-
-            //?
+        if(motivationReward > motivation.getReward(bestExperience)) {
+            bestExperience = lastExperience;
         }
-
-        return null;
     }
 }
