@@ -33,7 +33,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agent;
+//package agent;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class Main {
     
-    public static int getRes ( int ex , environment env){
+    public static int getRes ( int ex , Environment env){
     
       int res = 0 ;
       
@@ -70,7 +70,7 @@ public class Main {
     
  
     
-    public static List Interaction (int exp ,environment env , int s , int res) {
+    public static List Interaction (int exp ,Environment env , int s , int res) {
     
          
         List V = new ArrayList();
@@ -170,14 +170,15 @@ public class Main {
     
     
     public static void main(String[] args) {
-        // TODO code application logic here
+
         List exps = new LinkedList();
         List ress = new LinkedList();
         List vals = new LinkedList();
-        Agent a = new Agent (exps,ress,vals);
         
-        environment e = new environment(1);
-        SysMot s = new SysMot(2);
+        Environment e = new Environment(2);
+        Motivation s = new Motivation(2);
+
+        Agent a = new Agent(exps,ress,vals, s);
         
         int exp = 0 ;
         int res = 0 ; 
@@ -185,15 +186,16 @@ public class Main {
         
         for (int i = 0 ; i < 10 ; i ++){
         
-            exp = a.chooseExp();
-            res = interaction.getRes(exp, e);
+            exp = a.chooseExp(res);
+            //PARTIE 1 res = getRes(exp, e);
+            res = e.getResultatEnv3(exp);
             
-            val = interaction.Interaction(exp, e, s.id, res);
-            a.Resultats.add(res);
-            a.experiences.add(exp);
-            a.Valeur.add(val.get(val.size()-1));
+            /*val = Interaction(exp, e, s.id, res);
+            a.Resultats.add(res);*/
+            a.historiqueExperiences.add(exp);/*
+            a.ValeurMotivationelles.add(val.get(val.size()-1));*/
             
-            System.out.println(" ==== >  "+val);
+            System.out.println(" ==== >  ["+ exp + "," + res + "," + s.getRewardMotivationelle(exp, res) + "]");
         }
                 
     }

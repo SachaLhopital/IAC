@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -51,13 +53,90 @@ public class Motivation {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public int getRewardMotivationelle(int exp, int res) {
+
+        //List V = new ArrayList();
+
+        if(res == 0) {
+            return 0;
+        }
+
+        if (exp == 1 && res ==1){
+
+            if (id == 1){
+
+                /*V.add(exp);
+                V.add(res);
+                V.add(1);*/
+                return 1;
+            }
+            else if (id ==2){
+
+               return -1;
+            }
+            else {
+
+                return 1;
+            }
+
+        }
+        else if (exp == 1 && res ==2){
+
+            if (id == 1){
+
+                return 1;
+            }
+            else if (id==2){
+
+               return -1;
+            }
+            else {
+
+                return -1;
+            }
+
+        }
+        else if (exp == 2 && res ==1){
+
+            if (id == 1){
+
+                return -1;
+            }
+            else if (id==2){
+
+                return 1;
+            }
+            else {
+
+                return 1;
+            }
+
+        }
+        else{
+
+            if (id == 1){
+
+                return -1;
+            }
+            else if (id==2){
+
+                return 1;
+            }
+            else {
+
+                return -1;
+            }
+
+        }
+        //return 0;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // TP 2
+    public int getRewardMotivationPartie2(int res) {
+        if(res == 2) {
+            return 1;
+        }
+        return -1;
     }
-    
     
 }

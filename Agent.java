@@ -50,10 +50,8 @@ public class Agent {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agent;
 
-import static java.sql.JDBCType.NULL;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -61,29 +59,30 @@ import java.util.List;
  * @author PC
  */
 public class Agent {
-
-    /**
-     * @param args the command line arguments
-     */
    
-    public List experiences ;
+    public List historiqueExperiences;
+    public List<String> historiqueExperiencesTP2;
+
+    public Motivation motivation;
+    public int bestAction;
     
     public List Resultats ;
-    public List Valeur ; 
+    public List ValeurMotivationelles;
 
 
-    public Agent(List experiences, List Resultats, List Valeur) {
-        this.experiences = experiences;
+    public Agent(List experiences, List Resultats, List Valeur, Motivation motivation) {
+        this.historiqueExperiences = experiences;
         this.Resultats = Resultats;
-        this.Valeur = Valeur;
+        this.ValeurMotivationelles = Valeur;
+        this.motivation = motivation;
     }
 
-    public List getExperiences() {
-        return experiences;
+    public List getHistoriqueExperiences() {
+        return historiqueExperiences;
     }
 
-    public void setExperiences(List experiences) {
-        this.experiences = experiences;
+    public void setHistoriqueExperiences(List historiqueExperiences) {
+        this.historiqueExperiences = historiqueExperiences;
     }
 
     public List getResultats() {
@@ -95,15 +94,17 @@ public class Agent {
     }
     
     
-       public int chooseExp () {
-    
+       public int chooseExp (int result) {
+
+
+
         boolean exist = false;
-        for (int i = 1; i < 3; i++) {
-            for (int j = 0; j < experiences.size(); j++) {
-                if ((Integer)experiences.get(j) == i) { 
+        for (int i = 1; i < 3; i++) { //experiences 1 et 2
+            for (int j = 0; j < historiqueExperiences.size(); j++) {
+                if ((Integer) historiqueExperiences.get(j) == i) { //si j'ai déjà fait l'expérience
                     exist = true;
-                    if ((Integer)Valeur.get(j) > 0) {
-                        return i;
+                    if (/*(Integer) ValeurMotivationelles.get(j)*/motivation.getRewardMotivationelle(i, result) > 0) { // et que son résultat est cool
+                        return i; //On refait l'experience réussie
                     }
                 }
             }
@@ -115,5 +116,26 @@ public class Agent {
         }
         return 1;
     }
+
+    /*public int chooseExpPartie2 (int result) {
+
+        boolean exist = false;
+        for (int i = 1; i < 3; i++) { //experiences 1 et 2
+            for (int j = 0; j < historiqueExperiencesTP2.size(); j++) {
+                if ((Integer) historiqueExperiencesTP2.get(j) == i) { //si j'ai déjà fait l'expérience
+                    exist = true;
+                    if (*//*(Integer) ValeurMotivationelles.get(j)*//*motivation.getRewardMotivationelle(i, result) > 0) { // et que son résultat est cool
+                        return i; //On refait l'experience réussie
+                    }
+                }
+            }
+            if (!exist) {
+                return i;
+            } else {
+                exist = false;
+            }
+        }
+        return 1;
+    }*/
     
 }

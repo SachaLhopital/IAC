@@ -24,13 +24,6 @@ public class Environment {
 }
 */
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 /**
  *
  * @author PC
@@ -38,7 +31,7 @@ public class Environment {
 public class Environment {
     
     public int id ;
-    public int res ;
+    public int lastActionByAgent;
 
     public void setId(int id) {
         this.id = id;
@@ -46,18 +39,25 @@ public class Environment {
 
     public Environment(int id) {
         this.id = id;
-    }
-
-    public void setRes(int res) {
-        this.res = res;
+        lastActionByAgent = -1;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getRes() {
-        return res;
+    public int getResultatEnv3(int action) {
+
+        int resultat;
+
+        if( lastActionByAgent == -1 || action == lastActionByAgent) {
+            resultat = 1; //r1
+        } else {
+            resultat = 2; //r2
+        }
+        lastActionByAgent = action;
+        return resultat;
     }
+
     
 }
