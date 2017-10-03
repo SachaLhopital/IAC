@@ -10,10 +10,10 @@ public class Environment {
 
         switch(action) {
             case "1" :
-                return 1;
+                return 1; //r1
 
             case "2" :
-                return 2;
+                return 2; //r2
 
             default:
                 return 3;

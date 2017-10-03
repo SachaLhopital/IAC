@@ -2,7 +2,9 @@ public class Main {
 
     public static void main(String[] args) {
 
+        int r = 0;
         int count = 0;
+        String action = "";
 
         Motivation motivation = new Motivation();
         Agent agent = new Agent(motivation);
@@ -10,9 +12,8 @@ public class Main {
 
         while(count != 50) {
 
-            String action = agent.chooseExperience();
-            int r = env.getResult(action);
-            
+            action = agent.chooseExperience(r);
+            r = env.getResult(action);
 
             System.out.println("DO : " + action.toString());
             System.out.println("RESULT Environnement " + r);
