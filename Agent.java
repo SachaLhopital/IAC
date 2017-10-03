@@ -14,14 +14,20 @@ public class Agent {
         bestExperience = "2";
     }
 
-    public String chooseExperience() {
+    public String chooseExperience(int result) {
 
-        if((int)(Math.random()*motivation.getNbRules()) > 1) {
+        /*if((int)(Math.random()*motivation.getNbRules()) > 1) {
             System.out.println("Choix aléatoire");
             lastExperience = motivation.getRandomAction();
         } else {
             System.out.println("Meilleur choix");
             lastExperience = bestExperience;
+        }*/
+
+        if(result > 0) {
+            lastExperience = bestExperience;
+        } else {
+            lastExperience = motivation.getRandomAction();
         }
 
         return lastExperience;
