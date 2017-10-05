@@ -1,203 +1,130 @@
-/*public class Main {
+import Environments.Env1;
+import Environments.Env2;
+import Environments.Environment;
 
-    public static void main(String[] args) {
+import java.util.HashMap;
+import java.util.Scanner;
 
-        int r = 0;
-        int count = 0;
-        String action = "";
-
-        Motivation motivation = new Motivation();
-        Agent agent = new Agent(motivation);
-        Environment env = new Environment();
-
-        while(count != 50) {
-
-            action = agent.chooseExperience(r);
-            r = env.getResult(action);
-
-            System.out.println("DO : " + action.toString());
-            System.out.println("RESULT Environnement " + r);
-            System.out.println("RESULT Motivation " + motivation.getReward(action));
-            System.out.println("---------------------");
-
-            agent.updateReward(r);
-
-            count++;
-        }
-    }
-}
-*/
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//package agent;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import static java.lang.System.exit;
 
 /**
  *
  * @author PC
  */
 public class Main {
-    
-    public static int getRes ( int ex , Environment env){
-    
-      int res = 0 ;
-      
-      if (ex == 1){
-      
-          if (env.getId() == 1){
-          
-              res = 1;
-          }
-          else res = 2 ;
-      }
-      else if ( ex == 2){
-      
-          if ( env.getId() == 2){
-          
-              res = 2;
-          }
-          else res = 1 ;
-      }
-      return res ;
-    }
-    
- 
-    
-    public static List Interaction (int exp ,Environment env , int s , int res) {
-    
-         
-        List V = new ArrayList();
-        
-            
-            if (exp == 1 && res ==1){
-            
-                if (s == 1){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                else if ( s==2){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                else {
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                   
-            }
-            else if (exp == 1 && res ==2){
-            
-                if (s == 1){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                else if ( s==2){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                else {
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                   
-            }
-            else if (exp == 2 && res ==1){
-            
-                if (s == 1){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                else if ( s==2){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                else {
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                   
-            }
-            else{
-            
-                if (s == 1){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                else if ( s==2){
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(1);
-                }
-                else {
-                
-                    V.add(exp);
-                    V.add(res);
-                    V.add(-1);
-                }
-                   
-            }
-                     
-        return V ;
-    }
-    
-    
+
+    public static final HashMap<String, Integer> SYSTEM_MOTIV_1 = new HashMap<String, Integer>() {{
+        put("11", 1);
+        put("12", 1);
+        put("21", -1);
+        put("22", -1);
+    }};
+    public static final HashMap<String, Integer> SYSTEM_MOTIV_2 = new HashMap<String, Integer>() {{
+        put("11", -1);
+        put("12", -1);
+        put("21", 1);
+        put("22", 1);
+    }};
+    public static final HashMap<String, Integer> SYSTEM_MOTIV_3 = new HashMap<String, Integer>() {{
+        put("11", 1);
+        put("12", -1);
+        put("21", 1);
+        put("22", -1);
+    }};
+    public static final int NB_ITERATIONS = 10;
+
+    public static Scanner sc;
+    public static String temp;
+
+
     public static void main(String[] args) {
 
-        List exps = new LinkedList();
-        List ress = new LinkedList();
-        List vals = new LinkedList();
-        
-        Environment e = new Environment(2);
-        Motivation s = new Motivation(2);
+        sc = new Scanner(System.in);
 
-        Agent a = new Agent(exps,ress,vals, s);
-        
-        int exp = 0 ;
-        int res = 0 ; 
-        List val  = new LinkedList();
-        
-        for (int i = 0 ; i < 10 ; i ++){
-        
-            exp = a.chooseExp(res);
-            //PARTIE 1 res = getRes(exp, e);
-            res = e.getResultatEnv3(exp);
-            
-            /*val = Interaction(exp, e, s.id, res);
-            a.Resultats.add(res);*/
-            a.historiqueExperiences.add(exp);/*
-            a.ValeurMotivationelles.add(val.get(val.size()-1));*/
-            
-            System.out.println(" ==== >  ["+ exp + "," + res + "," + s.getRewardMotivationelle(exp, res) + "]");
+        System.out.println("-------------------------------------------\n"
+                + "Code de Travaux pratiques :\n"
+                + "Implémentation\u200B \u200Bd’algorithme\u200B \u200Bd’apprentissage\u200B \u200Bdéveloppemental.\n"
+                + "Réalisé par A. JOUAL & S. LHOPITAL - Automne 2017\n"
+                + "-------------------------------------------\n\n"
+                + "Selectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3] : ");
+
+
+        while(true) {
+
+            temp = sc.nextLine();
+
+            switch (temp) {
+
+                case "1":
+                    doPartieI();
+                    break;
+
+                case "2":
+                    //todo
+                    //res = e.getResultatEnv3(exp);
+                    break;
+
+                case "3":
+                    //todo
+                    break;
+
+                case "exit":
+                    System.exit(0);
+
+                default:
+                    System.out.println("Saisie non reconnue."
+                            + "\nAssurez-vous d'avoir saisie un chiffre (1, 2 ou 3)\n");
+            }
         }
-                
+    }
+
+    /***
+     * Manager for : Partie 1. Échauffement
+     */
+    private static void doPartieI() {
+
+        Environment e;
+        Motivation m;
+        int exp;
+        int res = 0;
+
+        System.out.println("-------------------------------------------\n"
+                + "Partie 1. Échauffement"
+                + "\n-------------------------------------------\n"
+                + "\nChoisissez l'environnement [1 ou 2] : ");
+
+        temp = sc.nextLine();
+
+        if(temp.equals("1")) {
+            e = new Env1();
+        } else {
+            e = new Env2();
+        }
+
+        System.out.println("\nChoisissez le système motivationnel [1, 2 ou 3] : ");
+
+        temp = sc.nextLine();
+
+        if(temp.equals("1")) {
+            m = new Motivation(SYSTEM_MOTIV_1);
+        } else if(temp.equals("2")) {
+            m = new Motivation(SYSTEM_MOTIV_2);
+        } else {
+            m = new Motivation(SYSTEM_MOTIV_3);
+        }
+
+        Agent agent = new Agent(m);
+
+        for (int i = 0 ; i < NB_ITERATIONS ; i ++){
+
+            exp = agent.chooseExp(res);
+            res = e.getResultat(exp);
+
+            System.out.println(" ==== >  ["
+                    + exp + ","
+                    + res + ","
+                    + m.getReward("" + exp + res) + "]");
+        }
     }
     
 }

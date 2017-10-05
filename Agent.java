@@ -1,57 +1,4 @@
-/**
- * Created by Sachouw on 28/09/2017.
- */
-/*
-public class Agent {
-    // salut 
-
-    private Motivation motivation;
-    private String lastExperience;
-    private String bestExperience;
-
-    public Agent(Motivation m) {
-        lastExperience = null;
-        motivation = m;
-        bestExperience = "2";
-    }
-
-    public String chooseExperience(int result) {
-
-        /*if((int)(Math.random()*motivation.getNbRules()) > 1) {
-            System.out.println("Choix aléatoire");
-            lastExperience = motivation.getRandomAction();
-        } else {
-            System.out.println("Meilleur choix");
-            lastExperience = bestExperience;
-        }*/
-/*
-        if(result > 0) {
-            lastExperience = bestExperience;
-        } else {
-            lastExperience = motivation.getRandomAction();
-        }
-
-        return lastExperience;
-    }
-
-    public void updateReward(int result) {
-        int motivationReward = motivation.getReward(lastExperience);
-
-        if(motivationReward > motivation.getReward(bestExperience)) {
-            bestExperience = lastExperience;
-        }
-    }
-}
-*/
-
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,22 +6,27 @@ import java.util.List;
  * @author PC
  */
 public class Agent {
+
+    private int lastExperience;
+    private int bestExperience;
    
     public List historiqueExperiences;
     public List<String> historiqueExperiencesTP2;
 
     public Motivation motivation;
-    public int bestAction;
     
     public List Resultats ;
     public List ValeurMotivationelles;
 
 
-    public Agent(List experiences, List Resultats, List Valeur, Motivation motivation) {
-        this.historiqueExperiences = experiences;
-        this.Resultats = Resultats;
-        this.ValeurMotivationelles = Valeur;
-        this.motivation = motivation;
+    public Agent(Motivation m) {
+        this.historiqueExperiences = new ArrayList();
+        this.Resultats = new ArrayList();
+        this.ValeurMotivationelles = new ArrayList();
+
+        motivation = m;
+        bestExperience = motivation.getRandomAction();
+        lastExperience = bestExperience;
     }
 
     public List getHistoriqueExperiences() {
@@ -85,36 +37,24 @@ public class Agent {
         this.historiqueExperiences = historiqueExperiences;
     }
 
-    public List getResultats() {
-        return Resultats;
-    }
+    /***
+     * Choose wich action to do based on the previous result
+     * @param result result of the previous action on the environment
+     * @return the next action to do as an integer
+     */
+    public int chooseExp (int result) {
 
-    public void setResultats(List Resultats) {
-        this.Resultats = Resultats;
-    }
-    
-    
-       public int chooseExp (int result) {
+        if(result != 0) {
 
+            if (motivation.getReward("" + lastExperience + result) >= 0) {
+                updateReward(result);
 
-
-        boolean exist = false;
-        for (int i = 1; i < 3; i++) { //experiences 1 et 2
-            for (int j = 0; j < historiqueExperiences.size(); j++) {
-                if ((Integer) historiqueExperiences.get(j) == i) { //si j'ai déjà fait l'expérience
-                    exist = true;
-                    if (/*(Integer) ValeurMotivationelles.get(j)*/motivation.getRewardMotivationelle(i, result) > 0) { // et que son résultat est cool
-                        return i; //On refait l'experience réussie
-                    }
-                }
-            }
-            if (!exist) {
-                return i;
             } else {
-                exist = false;
+                //Todo : on doit réaliser une expérience non réalisé jusqu'à présent et pas une action random
+                lastExperience = motivation.getRandomAction();
             }
         }
-        return 1;
+        return lastExperience;
     }
 
     /*public int chooseExpPartie2 (int result) {
@@ -137,5 +77,12 @@ public class Agent {
         }
         return 1;
     }*/
-    
+
+    private void updateReward(int result) {
+        int motivationReward = motivation.getReward("" + lastExperience + result);
+
+        if(motivationReward > motivation.getReward("" + bestExperience + result)) {
+            bestExperience = lastExperience;
+        }
+    }
 }
