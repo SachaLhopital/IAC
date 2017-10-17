@@ -46,7 +46,8 @@ public class Main {
                 + "Implémentation\u200B \u200Bd’algorithme\u200B \u200Bd’apprentissage\u200B \u200Bdéveloppemental.\n"
                 + "Réalisé par A. JOUAL & S. LHOPITAL - Automne 2017\n"
                 + "-------------------------------------------\n\n"
-                + "Selectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3] : ");
+                + "Selectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3] "
+                + "('exit' pour quitter le programme) : ");
 
 
         while(true) {
@@ -120,8 +121,8 @@ public class Main {
             exp = agent.chooseExp(res);
             res = e.getResultat(exp);
 
-            System.out.println(" ==== >  ["
-                    + exp + ","
+            System.out.println(" ==== >  [e"
+                    + exp + ",r"
                     + res + ","
                     + m.getReward("" + exp + res) + "]");
         }

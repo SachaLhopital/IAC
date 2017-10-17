@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -10,7 +12,7 @@ public class Agent {
     private int lastExperience;
     private int bestExperience;
    
-    public List historiqueExperiences;
+    public List<String> historiqueExperiences;
     public List<String> historiqueExperiencesTP2;
 
     public Motivation motivation;
@@ -25,16 +27,19 @@ public class Agent {
         this.ValeurMotivationelles = new ArrayList();
 
         motivation = m;
-        bestExperience = motivation.getRandomAction();
-        lastExperience = bestExperience;
+
+        String a = motivation.getRandomAction();
+        bestExperience = getNumberOfAction(a);
+        setLastExperience(a);
     }
 
-    public List getHistoriqueExperiences() {
-        return historiqueExperiences;
+    public int getLastExperience() {
+        return lastExperience;
     }
 
-    public void setHistoriqueExperiences(List historiqueExperiences) {
-        this.historiqueExperiences = historiqueExperiences;
+    public void setLastExperience(String action) {
+        lastExperience = getNumberOfAction(action);
+        historiqueExperiences.add(action);
     }
 
     /***
@@ -46,15 +51,15 @@ public class Agent {
 
         if(result != 0) {
 
-            if (motivation.getReward("" + lastExperience + result) >= 0) {
+            if (motivation.getReward("" + getLastExperience() + result) >= 0) {
                 updateReward(result);
 
             } else {
                 //Todo : on doit réaliser une expérience non réalisé jusqu'à présent et pas une action random
-                lastExperience = motivation.getRandomAction();
+                setLastExperience(getActionNotTestedYet());
             }
         }
-        return lastExperience;
+        return getLastExperience();
     }
 
     /*public int chooseExpPartie2 (int result) {
@@ -79,10 +84,42 @@ public class Agent {
     }*/
 
     private void updateReward(int result) {
-        int motivationReward = motivation.getReward("" + lastExperience + result);
+        int motivationReward = motivation.getReward("" + getLastExperience() + result);
 
         if(motivationReward > motivation.getReward("" + bestExperience + result)) {
-            bestExperience = lastExperience;
+            bestExperience = getLastExperience();
         }
     }
+
+    /***
+     * Récupère une action que l'agent peux faire et qu'il n'a pas encore dans son historique
+     * @return
+     */
+    private String getActionNotTestedYet() {
+        String key = "";
+        for(Map.Entry<String, Integer> e : motivation.getSystemMotivation().entrySet()) {
+
+            key = e.getKey();
+
+            if(historiqueExperiences.contains(key)) {
+                //continue
+            } else {
+                return key;
+            }
+        }
+        return key;
+    }
+
+    /***
+     * Split l'intéraction pour retourner le i de l'action
+     * ex: '11' retourne 1
+     * ex: '21' retourne 2
+     * @param action
+     * @return
+     */
+    private int getNumberOfAction(String action) {
+        return  Character.getNumericValue(action.charAt(0));
+    }
+
+
 }

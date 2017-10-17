@@ -13,14 +13,17 @@ public class Motivation {
         motivations = m;
     }
 
+    public HashMap<String, Integer> getSystemMotivation() {
+        return motivations;
+    }
+
     /***
      * Retourne une action aléatoire impliqué dans le système motivationnel
      * @return
      */
-    public int getRandomAction() {
+    public String getRandomAction() {
         Object[] keys = motivations.keySet().toArray();
-        return Character.getNumericValue(
-                ((String) keys[new Random().nextInt(keys.length)]).charAt(0));
+        return (String) keys[new Random().nextInt(keys.length)];
     }
 
     /***
