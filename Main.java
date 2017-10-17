@@ -61,7 +61,7 @@ public class Main {
                     break;
 
                 case "2":
-                    //todo
+                    doPartieII();
                     //res = e.getResultatEnv3(exp);
                     break;
 
@@ -126,6 +126,21 @@ public class Main {
                     + res + ","
                     + m.getReward("" + exp + res) + "]");
         }
+    }
+
+    /***
+     * Manager for : Partie 2. Apprentissage de Séquences
+     */
+    private static void doPartieII(){
+
+        System.out.println("-------------------------------------------\n"
+                + "Partie 2. Apprentissage de Séquences"
+                + "\n-------------------------------------------\n");
+
+        Environment environment;
+        Motivation m;
+        int exp;
+        int res = 0;
     }
     
 }
