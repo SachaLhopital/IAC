@@ -1,11 +1,13 @@
+import Agents.Agent;
+import Agents.AgentSequentiel;
 import Environments.Env1;
 import Environments.Env2;
+import Environments.Env3;
 import Environments.Environment;
+import Utilities.Motivation;
 
 import java.util.HashMap;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
 
 /**
  *
@@ -31,11 +33,17 @@ public class Main {
         put("21", 1);
         put("22", -1);
     }};
+    public static final HashMap<String, Integer> SYSTEM_MOTIV_4 = new HashMap<String, Integer>() {{
+        put("11", -1);
+        put("12", 1);
+        put("21", -1);
+        put("22", 1);
+    }};
+
     public static final int NB_ITERATIONS = 10;
 
     public static Scanner sc;
     public static String temp;
-
 
     public static void main(String[] args) {
 
@@ -45,12 +53,13 @@ public class Main {
                 + "Code de Travaux pratiques :\n"
                 + "Implémentation\u200B \u200Bd’algorithme\u200B \u200Bd’apprentissage\u200B \u200Bdéveloppemental.\n"
                 + "Réalisé par A. JOUAL & S. LHOPITAL - Automne 2017\n"
-                + "-------------------------------------------\n\n"
-                + "Selectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3] "
-                + "('exit' pour quitter le programme) : ");
+                + "-------------------------------------------");
 
 
         while(true) {
+
+            System.out.println("\nSelectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3]\n"
+                    +"('exit' pour quitter le programme) : ");
 
             temp = sc.nextLine();
 
@@ -62,7 +71,6 @@ public class Main {
 
                 case "2":
                     doPartieII();
-                    //res = e.getResultatEnv3(exp);
                     break;
 
                 case "3":
@@ -79,15 +87,15 @@ public class Main {
         }
     }
 
+    //////////////////////////////
+    // IA methodes
+
     /***
      * Manager for : Partie 1. Échauffement
      */
     private static void doPartieI() {
 
         Environment e;
-        Motivation m;
-        int exp;
-        int res = 0;
 
         System.out.println("-------------------------------------------\n"
                 + "Partie 1. Échauffement"
@@ -102,30 +110,8 @@ public class Main {
             e = new Env2();
         }
 
-        System.out.println("\nChoisissez le système motivationnel [1, 2 ou 3] : ");
-
-        temp = sc.nextLine();
-
-        if(temp.equals("1")) {
-            m = new Motivation(SYSTEM_MOTIV_1);
-        } else if(temp.equals("2")) {
-            m = new Motivation(SYSTEM_MOTIV_2);
-        } else {
-            m = new Motivation(SYSTEM_MOTIV_3);
-        }
-
-        Agent agent = new Agent(m);
-
-        for (int i = 0 ; i < NB_ITERATIONS ; i ++){
-
-            exp = agent.chooseExp(res);
-            res = e.getResultat(exp);
-
-            System.out.println(" ==== >  [e"
-                    + exp + ",r"
-                    + res + ","
-                    + m.getReward("" + exp + res) + "]");
-        }
+        Motivation m = selectMotivation();
+        learn(e, m, new Agent(m));
     }
 
     /***
@@ -137,10 +123,54 @@ public class Main {
                 + "Partie 2. Apprentissage de Séquences"
                 + "\n-------------------------------------------\n");
 
-        Environment environment;
-        Motivation m;
+        Environment environment = new Env3();
+        Motivation m = new Motivation(SYSTEM_MOTIV_4);
+        learn(environment, m, new AgentSequentiel(m));
+    }
+
+    /***
+     * Do the experiment :
+     * The agent choose an experiment, then use the result in his next choice
+     * @param e
+     * @param e
+     * @param m
+     * @param agent
+     */
+    private static void learn(Environment e, Motivation m, Agent agent) {
         int exp;
         int res = 0;
+
+        for (int i = 0; i < NB_ITERATIONS ; i ++){
+
+            exp = agent.chooseExp(res);
+            res = e.getResultat(exp);
+
+            System.out.println(" ==== >  [e"
+                    + exp + ",r"
+                    + res + ","
+                    + m.getReward("" + exp + res) + "]");
+        }
     }
-    
+
+
+    //////////////////////////////
+    // Scanner methodes
+
+    /***
+     * Ask for the user the motivationnal system
+     * @return
+     */
+    private static Motivation selectMotivation() {
+        System.out.println("\nChoisissez le système motivationnel [1, 2 ou 3] : \n" +
+                "(Attention, la première action de l'agent est aléatoire...) \n");
+
+        temp = sc.nextLine();
+
+        if(temp.equals("1")) {
+            return new Motivation(SYSTEM_MOTIV_1);
+        } else if(temp.equals("2")) {
+            return new Motivation(SYSTEM_MOTIV_2);
+        }
+        return new Motivation(SYSTEM_MOTIV_3);
+    }
 }

@@ -1,3 +1,5 @@
+package Utilities;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -18,7 +20,7 @@ public class Motivation {
     }
 
     /***
-     * Retourne une action aléatoire impliqué dans le système motivationnel
+     * Return a random action involved in the motivationnal system
      * @return
      */
     public String getRandomAction() {
@@ -27,7 +29,7 @@ public class Motivation {
     }
 
     /***
-     * Return the reward for the experience given
+     * Return the reward for the experiment given
      * (ex : "11" for action 1 given 1 as result)
      * @return the reward of the experience
      */
@@ -35,13 +37,4 @@ public class Motivation {
         int reward = motivations.get(experience);
         return reward;
     }
-
-    // TP 2
-    public int getRewardMotivationPartie2(int res) {
-        if(res == 2) {
-            return 1;
-        }
-        return -1;
-    }
-    
 }

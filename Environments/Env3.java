@@ -1,8 +1,8 @@
 package Environments;
 
 /**
- * Environnement pour la Partie 2 et les séquences
- * Retourne 1 si l'agent a changé d'action
+ * Environnement for the sequential agent
+ * Return 1 if the agent changed his action
  * Created by Sachouw on 17/10/2017.
  */
 public class Env3 extends Environment {
@@ -34,17 +34,4 @@ public class Env3 extends Environment {
         setLastActionByAgent(action);
         return resultat;
     }
-
-    /*public int getResultatEnv3(int action) {
-
-        int resultat;
-
-        if( lastActionByAgent == -1 || action == lastActionByAgent) {
-            resultat = 1; //r1
-        } else {
-            resultat = 2; //r2
-        }
-        lastActionByAgent = action;
-        return resultat;
-    }*/
 }
