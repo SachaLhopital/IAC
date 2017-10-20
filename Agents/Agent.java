@@ -96,9 +96,6 @@ public class Agent {
         return key;
     }
 
-    //////////////////////////////
-    // Private methodes
-
     /***
      * Split the interaction to return the i action
      * ex: '11' return 1
@@ -106,7 +103,7 @@ public class Agent {
      * @param action
      * @return
      */
-    private int getNumberOfAction(String action) {
+    protected int getNumberOfAction(String action) {
         return  Character.getNumericValue(action.charAt(0));
     }
 }

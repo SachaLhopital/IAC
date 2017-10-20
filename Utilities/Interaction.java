@@ -10,15 +10,13 @@ public class Interaction {
     private int value;
     private String label;
     private Interaction previousInteraction;
-    private Interaction nextInteraction;
 
-    public Interaction(int a, int r, int v, Interaction iPrec, Interaction iSuiv) {
+    public Interaction(int a, int r, int v, Interaction iPrec) {
         action = a;
         result = r;
         value = v;
         label = "e" + a + "r" + r;
         previousInteraction = iPrec;
-        nextInteraction = iSuiv;
     }
 
     //////////////////////////////
@@ -42,10 +40,10 @@ public class Interaction {
      */
     //todo : pas super => doit permettre de donner plus d'importance aux meilleurs intéractions ?
     public int getWeight() {
-        if(nextInteraction == null) {
+        if(previousInteraction == null) {
             return value;
         }
-        return value * nextInteraction.getWeight();
+        return value * previousInteraction.getWeight();
     }
 
     public String toString() {
