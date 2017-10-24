@@ -36,14 +36,7 @@ public class AgentSequentiel extends Agent {
             => prévoir la mise à jour de celle-ci lorsqu'on a obtenu le résultat
 
         */
-
-            /*if (motivation.getReward("" + getLastExperience() + result) >= 0) {
-
-                updateReward(result);
-
-            } else {*/
-
-            //updateHistorique(result);
+            updateInteraction(result);
 
             if(historiqueInteraction.size() > 1) {
 
@@ -78,48 +71,67 @@ public class AgentSequentiel extends Agent {
                 setLastExperience(getActionNotTestedYet());
             }
 
-            addInteractionInHistorique();
-            /*}*/
+            saveInteraction();
         }
 
         return getLastExperience();
     }
 
-    /***
-     * Add (if doesn't exist yet) the last experiment in the list of all interactions
-     */
-    private void addInteractionInHistorique() {
-
+    private void saveInteraction() {
+        //On récupère l'intéraction précédente si elle existe
         int lastExp = getLastExperience();
 
-        //Si on est pas à la première itération
-        if(historiqueExperiences.size() > 0) {
 
-            Interaction previousInteraction;
+        Interaction previousInteraction;
 
-            //Si on adéjà enregistré une intéraction
-            if(historiqueInteraction.size() > 0) {
-                previousInteraction = historiqueInteraction.get(historiqueInteraction.size() - 1);
-            } else {
+        if (historiqueInteraction.size() > 0) {
+            //on récupère l'intéraction précédente
+            previousInteraction = historiqueInteraction.get(historiqueInteraction.size() - 1);
 
-                String firstExp = historiqueExperiences.get(0);
+        } else {
 
-                previousInteraction = new Interaction(
-                        getNumberOfAction(firstExp),
-                        0, // <= quoi mettre ici ?
-                        0, // <= quoi mettre ici ? (récupérer le résultat de la 1er action
-                        null);
-            }
+            String firstExp = historiqueExperiences.size() > 0 ? historiqueExperiences.get(0) : null;
 
-            //ajout de la dernière expérience comme intéraction
-            historiqueInteraction.add(
-                    new Interaction(
-                            lastExp,
-                            0, // <= à mettre à jour dans le update ?
-                            0, // <= à mettre à jour dans le update ?
-                            previousInteraction));
+            previousInteraction = new Interaction(
+                    getNumberOfAction(firstExp),
+                    getNumberOfResult(firstExp),
+                    motivation.getReward("" + firstExp),
+                    null);
         }
 
-        System.out.println("Historique : " + historiqueInteraction.toString());
+        //ajout de la dernière expérience dans la liste des intéractions
+        historiqueInteraction.add(
+                new Interaction(
+                        lastExp,
+                        0,
+                        0,
+                        previousInteraction));
+    }
+
+    /***
+     * Update an interaction based on the last result
+     * @param result
+     */
+    private void updateInteraction(int result) {
+
+        Interaction interactionToUpdate;
+
+        //On récupère l'itéraction à modifier
+        if(historiqueInteraction.size() > 0) {
+
+            int index = historiqueInteraction.size() - 1;
+
+            interactionToUpdate = historiqueInteraction.get(index);
+            interactionToUpdate.SetResult(result);
+            interactionToUpdate.AddValue(motivation.getReward("" + getLastExperience() + result));
+
+            historiqueInteraction.set(index, interactionToUpdate);
+        }
+
+        System.out.println("Update historique : " + historiqueInteraction.toString());
+    }
+
+    private int getNumberOfResult(String s) {
+        return Character.getNumericValue(s.charAt(1));
     }
 }

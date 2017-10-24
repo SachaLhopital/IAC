@@ -8,14 +8,12 @@ public class Interaction {
     private int action;
     private int result;
     private int value;
-    private String label;
     private Interaction previousInteraction;
 
     public Interaction(int a, int r, int v, Interaction iPrec) {
         action = a;
         result = r;
         value = v;
-        label = "e" + a + "r" + r;
         previousInteraction = iPrec;
     }
 
@@ -31,7 +29,15 @@ public class Interaction {
     }
 
     public String getLabel() {
-        return label;
+        return "e" + action + "r" + result;
+    }
+
+    public void SetResult(int r) {
+        result = r;
+    }
+
+    public void AddValue(int v) {
+        value += v;
     }
 
     /***
@@ -43,11 +49,11 @@ public class Interaction {
         if(previousInteraction == null) {
             return value;
         }
-        return value * previousInteraction.getWeight();
+        return value + getPreviousInteraction().getWeight();
     }
 
     public String toString() {
         String s = "[" + (previousInteraction == null ? "" : previousInteraction.getLabel());
-        return s + "-" + label + "," + getWeight() + "]";
+        return s + "-" + getLabel() + "," + getWeight() + "]";
     }
 }
