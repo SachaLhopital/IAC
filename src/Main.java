@@ -152,6 +152,9 @@ public class Main {
                     + res + ","
                     + m.getReward("" + exp + res) + "]");
         }
+
+        System.out.println("Historique des séquences apprises par l'agent : "
+                + ((AgentSequentiel) agent).historiqueInteraction.toString());
     }
 
 

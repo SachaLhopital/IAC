@@ -32,6 +32,10 @@ public class Interaction {
         return "e" + action + "r" + result;
     }
 
+    public int getResult() {
+        return result;
+    }
+
     public void SetResult(int r) {
         result = r;
     }
@@ -52,7 +56,14 @@ public class Interaction {
     }
 
     public String toString() {
-        String s = "[" + (previousInteraction == null ? "" : previousInteraction.getLabel());
+        String s = "[" + (previousInteraction == null ? "" : previousInteraction.toString());
         return s + "-" + getLabel() + "," + getWeight() + "]";
+    }
+
+    public boolean equals(Interaction i) {
+        return action == i.action
+                && result == i.result
+                && previousInteraction == null
+                && i.previousInteraction == null;
     }
 }

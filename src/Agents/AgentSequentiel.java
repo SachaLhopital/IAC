@@ -6,6 +6,7 @@ import src.Utilities.Motivation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sachouw on 20/10/2017.
@@ -50,6 +51,8 @@ public class AgentSequentiel extends Agent {
 
                 //On effectue la meilleur séquence de notre historique
 
+                int[] sequence;
+
                 int bestKey = 0;
                 int bestValue = 0;
                 int currentKey = 0;
@@ -61,25 +64,29 @@ public class AgentSequentiel extends Agent {
 
                     if((iPrec = activatedInteraction.getPreviousInteraction()) != null) {
 
-                        //Si l'action précédente de la séquence qu'on explore est l'action que l'on viens de faire,
-                        //alors on étudie si l'action suivante est la meilleur
-                        if(iPrec.getAction() == getLastExperience()) {
+                        //Si l'action/resultat précédent de la séquence qu'on explore
+                        // est l'action/résultat que l'on viens de faire,
+                        //alors on étudie si l'action suivante est la meilleur à faire
+                        if(iPrec.getAction() == getLastExperience()
+                                && iPrec.getResult() == result) {
 
-                            currentKey = activatedInteraction.getActio n();
+                            currentKey = activatedInteraction.getAction();
                             currentValue = activatedInteraction.getWeight();
 
                             nextActions.put(currentKey, currentValue);
-
-                            if (bestKey == 0 || currentValue > bestValue) {
-                                bestKey = currentKey;
-                                bestValue = currentValue;
-                            }
                         }
                     }
                 }
 
-                System.out.println("Meilleur action choisie : " + bestKey + " ; value : " + bestValue);
-                setLastExperience("" + bestKey + bestValue);
+                for (Map.Entry a : nextActions.entrySet()) {
+                    if(bestKey == 0 || (int) a.getValue() > bestValue) {
+                        bestKey = (int) a.getKey();
+                        bestValue = (int) a.getValue();
+                    }
+                }
+
+                //System.out.println("Meilleur Action : " + bestKey + " ; value : " + bestValue);
+                setLastExperience("" + bestKey);
             }
 
             saveInteraction();
@@ -89,10 +96,8 @@ public class AgentSequentiel extends Agent {
     }
 
     private void saveInteraction() {
-        //On récupère l'intéraction précédente si elle existe
+
         int lastExp = getLastExperience();
-
-
         Interaction previousInteraction;
 
         if (historiqueInteraction.size() > 0) {
@@ -110,7 +115,7 @@ public class AgentSequentiel extends Agent {
                     null);
         }
 
-        //ajout de la dernière expérience dans la liste des intéractions
+        //ajout de la dernière expérience dans la liste des intéractions précédentes
         historiqueInteraction.add(
                 new Interaction(
                         lastExp,
@@ -138,11 +143,5 @@ public class AgentSequentiel extends Agent {
 
             historiqueInteraction.set(index, interactionToUpdate);
         }
-
-        System.out.println("Update historique : " + historiqueInteraction.toString());
-    }
-
-    private int getNumberOfResult(String s) {
-        return Character.getNumericValue(s.charAt(1));
     }
 }

@@ -106,4 +106,8 @@ public class Agent {
     protected int getNumberOfAction(String action) {
         return  Character.getNumericValue(action.charAt(0));
     }
+
+    protected int getNumberOfResult(String s) {
+        return Character.getNumericValue(s.charAt(1));
+    }
 }
