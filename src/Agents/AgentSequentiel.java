@@ -1,7 +1,7 @@
-package Agents;
+package src.Agents;
 
-import Utilities.Interaction;
-import Utilities.Motivation;
+import src.Utilities.Interaction;
+import src.Utilities.Motivation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +12,13 @@ import java.util.List;
  */
 public class AgentSequentiel extends Agent {
 
+    public int nb_iterations_babillage;
     public List<Interaction> historiqueInteraction;
 
     public AgentSequentiel(Motivation m) {
         super(m);
         historiqueInteraction = new ArrayList();
+        nb_iterations_babillage = 50;
     }
 
     @Override
@@ -38,7 +40,15 @@ public class AgentSequentiel extends Agent {
         */
             updateInteraction(result);
 
-            if(historiqueInteraction.size() > 1) {
+            if(nb_iterations_babillage > 0) {
+
+                //Babillage : effectue une action random
+                setLastExperience(motivation.getRandomAction());
+                nb_iterations_babillage--;
+
+            } else {
+
+                //On effectue la meilleur séquence de notre historique
 
                 int bestKey = 0;
                 int bestValue = 0;
@@ -51,24 +61,25 @@ public class AgentSequentiel extends Agent {
 
                     if((iPrec = activatedInteraction.getPreviousInteraction()) != null) {
 
-                        currentKey = iPrec.getAction();
-                        currentValue = activatedInteraction.getWeight();
+                        //Si l'action précédente de la séquence qu'on explore est l'action que l'on viens de faire,
+                        //alors on étudie si l'action suivante est la meilleur
+                        if(iPrec.getAction() == getLastExperience()) {
 
-                        nextActions.put(currentKey, currentValue);
+                            currentKey = activatedInteraction.getActio n();
+                            currentValue = activatedInteraction.getWeight();
 
-                        if (bestKey == 0 || currentValue > bestValue) {
-                            bestKey = currentKey;
-                            bestValue = currentValue;
+                            nextActions.put(currentKey, currentValue);
+
+                            if (bestKey == 0 || currentValue > bestValue) {
+                                bestKey = currentKey;
+                                bestValue = currentValue;
+                            }
                         }
                     }
                 }
 
                 System.out.println("Meilleur action choisie : " + bestKey + " ; value : " + bestValue);
                 setLastExperience("" + bestKey + bestValue);
-            } else {
-
-                //Effectue une action non réalisée jusqu'à maintenant
-                setLastExperience(getActionNotTestedYet());
             }
 
             saveInteraction();

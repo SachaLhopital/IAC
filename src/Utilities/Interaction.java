@@ -1,4 +1,4 @@
-package Utilities;
+package src.Utilities;
 
 /**
  * Created by Sachouw on 20/10/2017.
@@ -44,7 +44,6 @@ public class Interaction {
      * Get the "weight" of the interaction
      * @return
      */
-    //todo : pas super => doit permettre de donner plus d'importance aux meilleurs intéractions ?
     public int getWeight() {
         if(previousInteraction == null) {
             return value;

@@ -1,6 +1,6 @@
-package Agents;
+package src.Agents;
 
-import Utilities.Motivation;
+import src.Utilities.Motivation;
 
 import java.util.*;
 

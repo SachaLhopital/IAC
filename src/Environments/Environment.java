@@ -1,4 +1,4 @@
-package Environments;
+package src.Environments;
 
 /**
  * Created by Sachouw on 28/09/2017.

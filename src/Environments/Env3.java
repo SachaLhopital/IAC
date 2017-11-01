@@ -1,4 +1,4 @@
-package Environments;
+package src.Environments;
 
 /**
  * Environnement for the sequential agent

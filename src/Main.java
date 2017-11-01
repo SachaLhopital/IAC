@@ -1,10 +1,12 @@
-import Agents.Agent;
-import Agents.AgentSequentiel;
-import Environments.Env1;
-import Environments.Env2;
-import Environments.Env3;
-import Environments.Environment;
-import Utilities.Motivation;
+package src;
+
+import src.Agents.Agent;
+import src.Agents.AgentSequentiel;
+import src.Environments.Env1;
+import src.Environments.Env2;
+import src.Environments.Env3;
+import src.Environments.Environment;
+import src.Utilities.Motivation;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -40,7 +42,7 @@ public class Main {
         put("22", 1);
     }};
 
-    public static final int NB_ITERATIONS = 10;
+    public static final int NB_ITERATIONS = 100;
 
     public static Scanner sc;
     public static String temp;
