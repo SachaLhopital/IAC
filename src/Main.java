@@ -6,6 +6,7 @@ import src.Environments.Env1;
 import src.Environments.Env2;
 import src.Environments.Env3;
 import src.Environments.Environment;
+import src.Utilities.Interaction;
 import src.Utilities.Motivation;
 
 import java.util.HashMap;
@@ -123,7 +124,15 @@ public class Main {
 
         Environment environment = new Env3();
         Motivation m = new Motivation(SYSTEM_MOTIV_4);
-        learn(environment, m, new AgentSequentiel(m));
+        Agent agent = new AgentSequentiel(m);
+        learn(environment, m, agent);
+
+
+        System.out.println("\n Historique des séquences apprises par l'agent (avec leur poids) : ");
+
+        for(Interaction i : ((AgentSequentiel) agent).getHistoriqueInteraction()) {
+            System.out.println("[" + i.toString() + "]");
+        }
     }
 
     /***
@@ -148,9 +157,6 @@ public class Main {
                     + res + ","
                     + m.getReward("" + exp + res) + "]");
         }
-
-        System.out.println("Historique des séquences apprises par l'agent : "
-                + ((AgentSequentiel) agent).historiqueInteraction.toString());
     }
 
 

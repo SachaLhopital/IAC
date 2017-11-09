@@ -7,18 +7,35 @@ public class Interaction {
 
     private int action;
     private int result;
-    private int value;
+    private int valence;
+    private int weight;
     private Interaction previousInteraction;
 
     public Interaction(int a, int r, int v, Interaction iPrec) {
         action = a;
         result = r;
-        value = v;
+        valence = v;
+        weight = 1;
         previousInteraction = iPrec;
+    }
+
+    public Interaction(Interaction iToCopy) {
+        action = iToCopy.getAction();
+        result = iToCopy.result;
+        valence = iToCopy.valence;
+        previousInteraction = iToCopy.getPreviousInteraction();
     }
 
     //////////////////////////////
     // Getters & Setters
+
+    public int getValence() {
+        return valence;
+    }
+
+    public void setValence(int v) {
+        valence = v;
+    }
 
     public Interaction getPreviousInteraction() {
         return previousInteraction;
@@ -32,32 +49,51 @@ public class Interaction {
         return "e" + action + "r" + result;
     }
 
+    public int getSize() {
+        int size = previousInteraction == null ? 0 : previousInteraction.getSize();
+        return 1 + size;
+    }
+
+    public void setResult(int r) {
+        result = r;
+    }
+
     public int getResult() {
         return result;
     }
 
-    public void SetResult(int r) {
-        result = r;
-    }
-
-    public void AddValue(int v) {
-        value += v;
-    }
-
-    /***
-     * Get the "weight" of the interaction
-     * (Addition of all sequence values)
-     * @return
-     */
     public int getWeight() {
-        if(previousInteraction == null) {
-            return value;
-        }
-        return value + getPreviousInteraction().getWeight();
+        return weight;
+    }
+
+    public void addWeight(int x) {
+        weight += x;
     }
 
     public String toString() {
-        String s = "[" + (previousInteraction == null ? "" : previousInteraction.toString());
-        return s + "-" + getLabel() + "," + getWeight() + "]";
+        String s = (previousInteraction == null ? "" : previousInteraction.getLabel());
+        return s + "-" + getLabel() + " | " + getWeight();
+    }
+
+    public boolean equals(Interaction i) {
+        return i.getAction() == getAction()
+                && i.result == result
+                && (i.getPreviousInteraction() == null && getPreviousInteraction() == null
+                    || i.getPreviousInteraction().equals(getPreviousInteraction()));
+    }
+
+    /***
+     * Remove the older interaction of the current sequence
+     * For instance if the sequence is [e1r1 - e2r2 - e1r2],
+     * this method will remove "e1r1"
+     */
+    public void removeOlderInteraction() {
+        Interaction prevInteractionOfMyPrevInteraction =
+                previousInteraction == null ? null : previousInteraction.getPreviousInteraction();
+        if(prevInteractionOfMyPrevInteraction == null) {
+            previousInteraction = null;
+        } else {
+            prevInteractionOfMyPrevInteraction.removeOlderInteraction();
+        }
     }
 }

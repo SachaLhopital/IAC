@@ -6,8 +6,9 @@ import java.util.*;
 
 public class Agent {
 
-    private int lastExperience;
     private int bestExperience;
+
+    protected int lastExperience;
 
     public List<String> historiqueExperiences;
     public Motivation motivation;

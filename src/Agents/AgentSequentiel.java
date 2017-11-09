@@ -1,10 +1,12 @@
 package src.Agents;
 
+import src.Main;
 import src.Utilities.Interaction;
 import src.Utilities.Motivation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,17 +14,41 @@ import java.util.List;
  */
 public class AgentSequentiel extends Agent {
 
-    private int nb_iterations_babillage;
+    public static final int SEQUENCE_SIZE = 2;
 
-    public List<Interaction> historiqueInteraction;
-    private boolean inBabillage;
+    private int lastResult;
+    private int nb_iterations_babillage;
+    private List<Interaction> historiqueInteraction;
 
     public AgentSequentiel(Motivation m) {
         super(m);
         historiqueInteraction = new ArrayList();
-        inBabillage = true;
-        nb_iterations_babillage = 50;
+        nb_iterations_babillage = Main.NB_ITERATIONS / 3;
+        lastResult = 0;
     }
+
+    //////////////////////////////
+    // Gettes & Setters
+
+    public List<Interaction> getHistoriqueInteraction() {
+        return historiqueInteraction;
+    }
+
+    public void setLastExperience(int action) {
+        lastExperience = action;
+    }
+
+    public void setLastResult(int result) {
+        lastResult = result;
+        historiqueExperiences.add(getLastExperience() + "" + lastResult);
+    }
+
+    public int getLastResult() {
+        return lastResult;
+    }
+
+    //////////////////////////////
+    // Méthodes publiques
 
     @Override
     public int chooseExp(int result) {
@@ -30,221 +56,130 @@ public class AgentSequentiel extends Agent {
         //Pour la première action de l'agent on ne rentre pas dans le if
         if(result != 0) {
 
-            //PSEUDO todo :
-        /*
-            Le result passé en paramètre correspond au résultat de l' action précédente.
-            Dans la toute première itération, on a pas de historiqueInteraction assiocié.
-            Par contre dès la 2e on ajoute une intéraction composée de l'action choisi
-            avec comme action précédente l'intéraction/l'expérience précédente
+            setLastResult(result);
 
-            => prévoir l'ajour de l'intéraction courante dans l'historique lorsqu'on l'a choisi
-            => prévoir la mise à jour de celle-ci lorsqu'on a obtenu le résultat
-
-        */
             updateInteraction(result);
 
-            if(inBabillage) {
-                //explore
-                System.out.println("babillage en cours");
-                //Effectue une action non réalisée jusqu'à maintenant
+            if(nb_iterations_babillage > 1) {
+
+                //Effectue une action aléatoire
                 setLastExperience(motivation.getRandomAction());
                 nb_iterations_babillage--;
 
-                if(nb_iterations_babillage < 1) {
-                    inBabillage = false;
-                    System.out.println("fin babillage");
-                }
-
             } else {
-
-
-
-                //if(historiqueInteraction.size() > 1) {
 
                 int bestKey = 0;
                 int bestValue = 0;
-                int currentKey = 0;
-                int currentValue = 0;
-                Interaction iPrec;
-                HashMap<Integer, Integer> nextActions = new HashMap<>(); //<Action, Gain>
 
-                for (Interaction activatedInteraction : historiqueInteraction) {
+                HashMap<Integer, Integer> actions = new HashMap<>();
 
-                    if((iPrec = activatedInteraction.getPreviousInteraction()) != null
-                            && iPrec.getAction() == getLastExperience()) {
+                for(Interaction i : getHistoriqueInteraction()) {
 
-                        currentKey = activatedInteraction.getAction();
-                        currentValue = activatedInteraction.getWeight();
+                    Interaction iPrev = i.getPreviousInteraction();
 
-                        nextActions.put(currentKey, currentValue);
+                    //L'intéraction est "activée"
+                    if(iPrev.getAction() == getLastExperience() && iPrev.getResult() == getLastResult()) {
+
+                        int proclativity = i.getWeight() * i.getValence();
+                        Integer currentValue = actions.get(i.getAction());
+
+                        if (currentValue != null) {
+                            currentValue += proclativity;
+                        } else {
+                            currentValue = proclativity;
+                        }
+
+                        actions.put(i.getAction(), proclativity);
 
                         if (bestKey == 0 || currentValue > bestValue) {
-                            bestKey = currentKey;
+                            bestKey = i.getAction();
                             bestValue = currentValue;
                         }
                     }
                 }
-
-                System.out.println("Meilleur action choisie : " + bestKey + " ; value : " + bestValue);
-                setLastExperience("" + bestKey + bestValue);
+                setLastExperience(bestKey);
             }
-
-
             saveInteraction();
         }
-
         return getLastExperience();
     }
 
 
+    //////////////////////////////
+    // Private méthods
 
-
-
-
-    public int chooseExp2(int result) {
-
-        //Pour la première action de l'agent on ne rentre pas dans le if
-        if(result != 0) {
-
-            //PSEUDO todo :
-        /*
-            Le result passé en paramètre correspond au résultat de l' action précédente.
-            Dans la toute première itération, on a pas de historiqueInteraction assiocié.
-            Par contre dès la 2e on ajoute une intéraction composée de l'action choisi
-            avec comme action précédente l'intéraction/l'expérience précédente
-
-            => prévoir l'ajour de l'intéraction courante dans l'historique lorsqu'on l'a choisi
-            => prévoir la mise à jour de celle-ci lorsqu'on a obtenu le résultat
-
-        */
-            updateInteraction(result);
-
-            if(inBabillage) {
-                //explore
-                System.out.println("babillage en cours");
-                //Effectue une action non réalisée jusqu'à maintenant
-                setLastExperience(motivation.getRandomAction());
-                nb_iterations_babillage--;
-
-                if(nb_iterations_babillage < 1) {
-                    inBabillage = false;
-                    System.out.println("fin babillage");
-                }
-
-            } else {
-
-
-
-                //if(historiqueInteraction.size() > 1) {
-
-                int bestKey = 0;
-                int bestValue = 0;
-                int currentKey = 0;
-                int currentValue = 0;
-                Interaction iPrec;
-                HashMap<Integer, Integer> nextActions = new HashMap<>(); //<Action, Gain>
-
-                for (Interaction activatedInteraction : historiqueInteraction) {
-
-                    if((iPrec = activatedInteraction.getPreviousInteraction()) != null
-                            && iPrec.getAction() == getLastExperience()) {
-
-                        currentKey = activatedInteraction.getAction();
-                        currentValue = activatedInteraction.getWeight();
-
-                        nextActions.put(currentKey, currentValue);
-
-                        if (bestKey == 0 || currentValue > bestValue) {
-                            bestKey = currentKey;
-                            bestValue = currentValue;
-                        }
-                    }
-                }
-
-                System.out.println("Meilleur action choisie : " + bestKey + " ; value : " + bestValue);
-                setLastExperience("" + bestKey + bestValue);
-            }
-
-
-            saveInteraction();
-        }
-
-        return getLastExperience();
-    }
-
-
-
-
-
-
-
+    /***
+     * Save the last action in interaction List
+     * Save the action but 0 as the result because the agent doesn't know it yet.
+     */
     private void saveInteraction() {
-        //On récupère l'intéraction précédente si elle existe
-        int lastExp = getLastExperience();
-
 
         Interaction previousInteraction;
+        List<Interaction> histo = getHistoriqueInteraction();
 
-        if (historiqueInteraction.size() > 0) {
-            //on récupère l'intéraction précédente
-            previousInteraction = historiqueInteraction.get(historiqueInteraction.size() - 1);
+        if (histo.size() > 0) {
+            //on récupère l'intéraction précédente;
+            previousInteraction = histo.get(histo.size() - 1);
 
-        }
-        else {
+        } else {
 
             String firstExp = historiqueExperiences.size() > 0 ? historiqueExperiences.get(0) : null;
 
             previousInteraction = new Interaction(
                     getNumberOfAction(firstExp),
                     getNumberOfResult(firstExp),
-                    motivation.getReward("" + firstExp),
+                    motivation.getReward(firstExp),
                     null);
         }
 
-        //ajout de la dernière expérience dans la liste des intéractions
+        Interaction realPreviousInteraction = new Interaction(previousInteraction);
 
-        historiqueInteraction.add(
-                new Interaction(
-                        lastExp,
-                        0,
-                        0,
-                        previousInteraction));
+        //On vérifie qu'on ne dépasse pas la taille de séquence définie.
+        while(realPreviousInteraction.getSize() >= SEQUENCE_SIZE) {
+            realPreviousInteraction.removeOlderInteraction();
+        }
+
+        Interaction newInteraction = new Interaction(
+                getLastExperience(), 0, 0, realPreviousInteraction
+        );
+
+        historiqueInteraction.add(newInteraction);
     }
 
     /***
      * Update an interaction based on the last result
+     * For instance, the last interaction was saved on the format : [eXr0],
+     * This method will update the "r0" with the right result
      * @param result
      */
     private void updateInteraction(int result) {
 
         Interaction interactionToUpdate;
+        List<Interaction> histo = getHistoriqueInteraction();
 
         //On récupère l'itéraction à modifier
-        if(historiqueInteraction.size() > 0) {
+        if(histo.size() > 0) {
 
-            int index = historiqueInteraction.size() - 1;
-            System.out.println(" index 1 ="+historiqueInteraction.get(index) + " size ="+historiqueInteraction.size());
-            interactionToUpdate = historiqueInteraction.get(index);
-            interactionToUpdate.SetResult(result);
-            interactionToUpdate.AddValue(motivation.getReward("" + getLastExperience() + result));
+            int index = histo.size() - 1;
 
+            interactionToUpdate = histo.remove(index);
+            interactionToUpdate.setResult(result);
+            interactionToUpdate.setValence(
+                    motivation.getReward(interactionToUpdate.getAction() + "" + result)
+            );
 
-            historiqueInteraction.set(index, interactionToUpdate);
-            System.out.println(" index 2 ="+historiqueInteraction.get(index) + " size ="+historiqueInteraction.size() + " action  ="+historiqueInteraction.get(index).getAction() + " label  ="+historiqueInteraction.get(index).getLabel() + " precedent ="+historiqueInteraction.get(index).getPreviousInteraction().getLabel());
+            //On vérifie que l'intéraction n'existe pas déjà dans l'historique :
+            // si c'est le cas, on ne fais que mettre à jour le poids
+            for(Iterator<Interaction> iterator = getHistoriqueInteraction().iterator(); iterator.hasNext();) {
 
-        }
-        int h = 0 ;
-        for (int i = 0 ; i < historiqueInteraction.size(); i++){
-            int index = historiqueInteraction.size() - 1;
-            if (i != index && historiqueInteraction.get(i).getLabel().equals(historiqueInteraction.get(index).getLabel()) && historiqueInteraction.get(i).getPreviousInteraction().getLabel().equals(historiqueInteraction.get(index).getPreviousInteraction().getLabel())) {
-                historiqueInteraction.remove(i);
+                Interaction i = iterator.next();
+
+                if(i.equals(interactionToUpdate)) {
+                    interactionToUpdate.addWeight(i.getWeight());
+                    iterator.remove();
+                }
             }
+            histo.add(interactionToUpdate);
         }
-
-        System.out.println("Update historique : " + historiqueInteraction.toString());
     }
-
-    /*private int getNumberOfResult(String s) {
-        return Character.getNumericValue(s.charAt(1));
-    }*/
 }
