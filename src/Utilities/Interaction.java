@@ -46,6 +46,7 @@ public class Interaction {
 
     /***
      * Get the "weight" of the interaction
+     * (Addition of all sequence values)
      * @return
      */
     public int getWeight() {
@@ -58,12 +59,5 @@ public class Interaction {
     public String toString() {
         String s = "[" + (previousInteraction == null ? "" : previousInteraction.toString());
         return s + "-" + getLabel() + "," + getWeight() + "]";
-    }
-
-    public boolean equals(Interaction i) {
-        return action == i.action
-                && result == i.result
-                && previousInteraction == null
-                && i.previousInteraction == null;
     }
 }

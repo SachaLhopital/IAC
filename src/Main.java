@@ -11,10 +11,6 @@ import src.Utilities.Motivation;
 import java.util.HashMap;
 import java.util.Scanner;
 
-/**
- *
- * @author PC
- */
 public class Main {
 
     public static final HashMap<String, Integer> SYSTEM_MOTIV_1 = new HashMap<String, Integer>() {{

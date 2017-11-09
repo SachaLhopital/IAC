@@ -4,10 +4,6 @@ import src.Utilities.Motivation;
 
 import java.util.*;
 
-/**
- *
- * @author PC
- */
 public class Agent {
 
     private int lastExperience;
@@ -46,7 +42,6 @@ public class Agent {
      * @param result result of the previous action on the environment
      * @return the next action to do as an integer
      */
-    //todo refactor avec AgentSeq
     public int chooseExp (int result) {
 
         if(result != 0) {
@@ -54,7 +49,6 @@ public class Agent {
             if (motivation.getReward("" + getLastExperience() + result) >= 0) {
                 updateReward(result);
             } else {
-                //Effectue une action non réalisée jusqu'à maintenant
                 setLastExperience(getActionNotTestedYet());
             }
         }
@@ -80,7 +74,6 @@ public class Agent {
      * Get an action not tested yet by the agent
      * @return
      */
-    //todo : pas vraiment optimisé
     protected String getActionNotTestedYet() {
         String key = "";
         for(Map.Entry<String, Integer> e : motivation.getSystemMotivation().entrySet()) {
@@ -107,7 +100,14 @@ public class Agent {
         return  Character.getNumericValue(action.charAt(0));
     }
 
-    protected int getNumberOfResult(String s) {
-        return Character.getNumericValue(s.charAt(1));
+    /***
+     * Split the interaction to return the i result
+     * ex: '11' return 1
+     * ex: '12' return 2
+     * @param result
+     * @return
+     */
+    protected int getNumberOfResult(String result) {
+        return Character.getNumericValue(result.charAt(1));
     }
 }
