@@ -46,12 +46,15 @@ public class Interaction {
     }
 
     public String getLabel() {
-        return "e" + action + "r" + result;
+        String s = (previousInteraction == null ? "" : previousInteraction.getLabel());
+        return s + "-" + "e" + action + "r" + result;
     }
 
     public int getSize() {
-        int size = previousInteraction == null ? 0 : previousInteraction.getSize();
-        return 1 + size;
+        if(previousInteraction == null) {
+            return 1;
+        }
+        return 1 + previousInteraction.getSize();
     }
 
     public void setResult(int r) {
@@ -71,15 +74,14 @@ public class Interaction {
     }
 
     public String toString() {
-        String s = (previousInteraction == null ? "" : previousInteraction.getLabel());
-        return s + "-" + getLabel() + " | " + getWeight();
+        return getLabel() + " | " + getWeight();
     }
 
     public boolean equals(Interaction i) {
         return i.getAction() == getAction()
                 && i.result == result
                 && (i.getPreviousInteraction() == null && getPreviousInteraction() == null
-                    || i.getPreviousInteraction().equals(getPreviousInteraction()));
+                || i.getPreviousInteraction().equals(getPreviousInteraction()));
     }
 
     /***
@@ -88,12 +90,12 @@ public class Interaction {
      * this method will remove "e1r1"
      */
     public void removeOlderInteraction() {
-        Interaction prevInteractionOfMyPrevInteraction =
+        Interaction prevInteractionOfPrevInt =
                 previousInteraction == null ? null : previousInteraction.getPreviousInteraction();
-        if(prevInteractionOfMyPrevInteraction == null) {
+        if(prevInteractionOfPrevInt == null) {
             previousInteraction = null;
         } else {
-            prevInteractionOfMyPrevInteraction.removeOlderInteraction();
+            previousInteraction.removeOlderInteraction();
         }
     }
 }

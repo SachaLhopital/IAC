@@ -73,7 +73,7 @@ public class Main {
                     break;
 
                 case "3":
-                    //todo
+                    doPartieIII();
                     break;
 
                 case "exit":
@@ -127,12 +127,22 @@ public class Main {
         Agent agent = new AgentSequentiel(m);
         learn(environment, m, agent);
 
-
         System.out.println("\n Historique des séquences apprises par l'agent (avec leur poids) : ");
-
         for(Interaction i : ((AgentSequentiel) agent).getHistoriqueInteraction()) {
             System.out.println("[" + i.toString() + "]");
         }
+    }
+
+    /***
+     * Manager for : Partie 3. Ouverture
+     */
+    private static void doPartieIII() {
+        System.out.println("-------------------------------------------\n"
+                + "Partie 3. Ouverture"
+                + "Notion de curiosité"
+                + "\n-------------------------------------------\n");
+
+
     }
 
     /***
@@ -152,7 +162,7 @@ public class Main {
             exp = agent.chooseExp(res);
             res = e.getResultat(exp);
 
-            System.out.println(" ==== >  [e"
+            System.out.println(" ==== > (" + i + ") [e"
                     + exp + ",r"
                     + res + ","
                     + m.getReward("" + exp + res) + "]");

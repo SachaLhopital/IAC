@@ -77,19 +77,19 @@ public class AgentSequentiel extends Agent {
 
                     Interaction iPrev = i.getPreviousInteraction();
 
-                    //L'intéraction est "activée"
+                    //Si l'interaction precedente correspond a celle que l'agent viens tout juste de faire
                     if(iPrev.getAction() == getLastExperience() && iPrev.getResult() == getLastResult()) {
 
-                        int proclativity = i.getWeight() * i.getValence();
+                        int proclivity = i.getWeight() * i.getValence();
                         Integer currentValue = actions.get(i.getAction());
 
                         if (currentValue != null) {
-                            currentValue += proclativity;
+                            currentValue += proclivity;
                         } else {
-                            currentValue = proclativity;
+                            currentValue = proclivity;
                         }
 
-                        actions.put(i.getAction(), proclativity);
+                        actions.put(i.getAction(), proclivity);
 
                         if (bestKey == 0 || currentValue > bestValue) {
                             bestKey = i.getAction();
