@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Motivation {
 
-    private HashMap<String, Integer> motivations;
+    protected HashMap<String, Integer> motivations;
 
     public Motivation(HashMap<String, Integer> m) {
         motivations = m;

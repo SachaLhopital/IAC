@@ -3,6 +3,7 @@ package src;
 import src.Agents.Agent;
 import src.Agents.AgentSequentiel;
 import src.Environments.*;
+import src.Utilities.BoringMotivation;
 import src.Utilities.Interaction;
 import src.Utilities.Motivation;
 
@@ -147,9 +148,61 @@ public class Main {
     private static void doPartieIII() {
         System.out.println("-------------------------------------------\n"
                 + "Partie 3. Ouverture"
-                + "Notion de curiosité"
-                + "\n-------------------------------------------\n");
+                + "\nNotion d'ennuie : système motivationnel qui cherche à obtenir r2"
+                + "\nSi l'agent obtient r2 plus de 10 fois de suite, il cherche à obtenir r1"
+                + "\nEt ainsi de suite"
+                + "\n-------------------------------------------\n"
+                + "\nChoisissez l'environnement [1, 2 , 3 pour un l'alternance de e1 et e2"
+                + "\nou 4 pour un changement de comportement apres literation 10] : ");
 
+        Environment environment;
+
+        temp = sc.nextLine();
+
+        switch (temp) {
+            case "1":
+                environment = new Env1();
+                break;
+            case "2":
+                environment = new Env2();
+                break;
+            case "3":
+                environment = new Env3();
+                break;
+            case "4":
+                environment = new Env4();
+                break;
+            default:
+                System.out.println("Saisie non reconnue. Environnement 1 par défaut.");
+                environment = new Env1();
+        }
+
+        BoringMotivation m = new BoringMotivation(SYSTEM_MOTIV_3, SYSTEM_MOTIV_4);
+        Agent agent = new AgentSequentiel(m);
+
+        int exp;
+        int res = 0;
+
+        for (int i = 0; i < NB_ITERATIONS ; i ++){
+
+            exp = agent.chooseExp(res);
+            res = environment.getResultat(exp);
+
+            m.setNbCorrectResult((m.getReward(exp + "" + res) == 1) ? m.getNbCorrectResult() + 1 : 0);
+
+            if(m.getNbCorrectResult() > 10) {
+                m.switchMotivation();
+                System.out.println("\n Historique des séquences apprises par l'agent (avec leur poids) : ");
+                for(Interaction j : ((AgentSequentiel) agent).getHistoriqueInteraction()) {
+                    System.out.println("[" + j.toString() + "]");
+                }
+            }
+
+            System.out.println(" ==== > (" + i + ") [e"
+                    + exp + ",r"
+                    + res + ","
+                    + m.getReward("" + exp + res) + "]");
+        }
 
     }
 
