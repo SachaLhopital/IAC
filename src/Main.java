@@ -2,10 +2,7 @@ package src;
 
 import src.Agents.Agent;
 import src.Agents.AgentSequentiel;
-import src.Environments.Env1;
-import src.Environments.Env2;
-import src.Environments.Env3;
-import src.Environments.Environment;
+import src.Environments.*;
 import src.Utilities.Interaction;
 import src.Utilities.Motivation;
 
@@ -118,11 +115,22 @@ public class Main {
      */
     private static void doPartieII(){
 
+        Environment environment;
+
         System.out.println("-------------------------------------------\n"
                 + "Partie 2. Apprentissage de Séquences"
-                + "\n-------------------------------------------\n");
+                + "\n-------------------------------------------\n"
+                + "\nChoisissez l'environnement ['1' pour un l'alternance de e1 et e2"
+                + "\nou '2' pour un changement de comportement apres literation 10] : ");
 
-        Environment environment = new Env3();
+        temp = sc.nextLine();
+
+        if(temp.equals("1")) {
+            environment = new Env3();
+        } else {
+            environment = new Env4();
+        }
+
         Motivation m = new Motivation(SYSTEM_MOTIV_4);
         Agent agent = new AgentSequentiel(m);
         learn(environment, m, agent);

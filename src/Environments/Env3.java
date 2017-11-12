@@ -14,11 +14,11 @@ public class Env3 extends Environment {
         lastActionByAgent = -1;
     }
 
-    private int getLastActionByAgent() {
+    protected int getLastActionByAgent() {
         return lastActionByAgent;
     }
 
-    private void setLastActionByAgent(int action) {
+    protected void setLastActionByAgent(int action) {
         lastActionByAgent = action;
     }
 
