@@ -55,8 +55,11 @@ public class Main {
 
         while(true) {
 
-            System.out.println("\nSelectionner la partie avec la laquelle vous souhaitez jouer [1, 2 ou 3]\n"
-                    +"('exit' pour quitter le programme) : ");
+            System.out.println("\nSelectionner la partie avec la laquelle vous souhaitez jouer : " +
+                    "\n- 1 : Partie 1 - Echauffement " +
+                    "\n- 2 : Partie 2 - Apprentissage de séquences" +
+                    "\n- 3 : Partie 3 - Ouverture"
+                    +"\n('exit' pour quitter le programme) : ");
 
             temp = sc.nextLine();
 
@@ -97,7 +100,9 @@ public class Main {
         System.out.println("-------------------------------------------\n"
                 + "Partie 1. Échauffement"
                 + "\n-------------------------------------------\n"
-                + "\nChoisissez l'environnement [1 ou 2] : ");
+                + "\nChoisissez l'environnement :" +
+                        "\n- 1 : Environnement de l'exercice 1" +
+                        "\n- 2 : Environnement de l'exercice 2");
 
         temp = sc.nextLine();
 
@@ -121,8 +126,9 @@ public class Main {
         System.out.println("-------------------------------------------\n"
                 + "Partie 2. Apprentissage de Séquences"
                 + "\n-------------------------------------------\n"
-                + "\nChoisissez l'environnement ['1' pour un l'alternance de e1 et e2"
-                + "\nou '2' pour un changement de comportement apres literation 10] : ");
+                + "\nChoisissez l'environnement : " +
+                "\n- 1 : Environnement qui retourne 2 lorsqu'on alterne e1 et e2 ; retourne 1 sinon"
+                + "\n- 2 : Environnement précédent mais qui change de comportement apres l'iteration 10");
 
         temp = sc.nextLine();
 
@@ -148,12 +154,15 @@ public class Main {
     private static void doPartieIII() {
         System.out.println("-------------------------------------------\n"
                 + "Partie 3. Ouverture"
-                + "\nNotion d'ennuie : système motivationnel qui cherche à obtenir r2"
+                + "\nSystème motivationnel qui cherche à obtenir r2"
                 + "\nSi l'agent obtient r2 plus de 10 fois de suite, il cherche à obtenir r1"
                 + "\nEt ainsi de suite"
                 + "\n-------------------------------------------\n"
-                + "\nChoisissez l'environnement [1, 2 , 3 pour un l'alternance de e1 et e2"
-                + "\nou 4 pour un changement de comportement apres literation 10] : ");
+                + "\nChoisissez l'environnement "
+                + "\n- 1 : Environnement de l'exercice 1" +
+                "\n- 2 : Environnement de l'exercice 2"
+                + "\n- 3 : Environnement qui retourne 2 lorsqu'on alterne e1 et e2 ; retourne 1 sinon"
+                + "\n- 4 : Environnement précédent mais qui change de comportement apres l'iteration 10");
 
         Environment environment;
 
@@ -190,6 +199,11 @@ public class Main {
 
             m.setNbCorrectResult((m.getReward(exp + "" + res) == 1) ? m.getNbCorrectResult() + 1 : 0);
 
+            System.out.println(" ==== > (" + i + ") [e"
+                    + exp + ",r"
+                    + res + ","
+                    + m.getReward("" + exp + res) + "]");
+
             if(m.getNbCorrectResult() > 10) {
                 m.switchMotivation();
                 System.out.println("\n Historique des séquences apprises par l'agent (avec leur poids) : ");
@@ -197,11 +211,6 @@ public class Main {
                     System.out.println("[" + j.toString() + "]");
                 }
             }
-
-            System.out.println(" ==== > (" + i + ") [e"
-                    + exp + ",r"
-                    + res + ","
-                    + m.getReward("" + exp + res) + "]");
         }
 
     }
@@ -239,7 +248,10 @@ public class Main {
      * @return
      */
     private static Motivation selectMotivation() {
-        System.out.println("\nChoisissez le système motivationnel [1, 2 ou 3] : \n" +
+        System.out.println("\nChoisissez le système motivationnel :" +
+                "\n- 1 : On cherche à faire e1, quel que soit le résultat" +
+                "\n- 2 : On cherche à faire e2, quel que soit le résultat" +
+                "\n- 3 : On cherche à obtenir r1 \n" +
                 "(Attention, la première action de l'agent est aléatoire...) \n");
 
         temp = sc.nextLine();

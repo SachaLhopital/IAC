@@ -68,9 +68,10 @@ public class AgentSequentiel extends Agent {
 
             } else {
 
+                //Calcul de la proclivité pour effectuer la meilleur action
+
                 int bestKey = 0;
                 int bestValue = 0;
-
                 HashMap<Integer, Integer> actions = new HashMap<>();
 
                 for(Interaction i : getHistoriqueInteraction()) {
@@ -78,9 +79,10 @@ public class AgentSequentiel extends Agent {
                     Interaction iPrev = i.getPreviousInteraction();
 
                     //Si l'interaction precedente correspond a celle que l'agent viens tout juste de faire
+                    //On regarde si il est intéréssant de faire l'action suivante
                     if(iPrev.getAction() == getLastExperience() && iPrev.getResult() == getLastResult()) {
 
-                        int proclivity = i.getWeight() * i.getValence();
+                        int proclivity = i.getWeight() * motivation.getReward(i.getAction() + "" + i.getResult());
                         Integer currentValue = actions.get(i.getAction());
 
                         if (currentValue != null) {
@@ -90,6 +92,7 @@ public class AgentSequentiel extends Agent {
                         }
 
                         actions.put(i.getAction(), proclivity);
+                        System.out.println("Prévision : e" + i.getAction() + " | proclivité : " + proclivity);
 
                         if (bestKey == 0 || currentValue > bestValue) {
                             bestKey = i.getAction();
@@ -128,7 +131,6 @@ public class AgentSequentiel extends Agent {
             previousInteraction = new Interaction(
                     getNumberOfAction(firstExp),
                     getNumberOfResult(firstExp),
-                    motivation.getReward(firstExp),
                     null);
         }
 
@@ -140,7 +142,7 @@ public class AgentSequentiel extends Agent {
         }
 
         Interaction newInteraction = new Interaction(
-                getLastExperience(), 0, 0, realPreviousInteraction
+                getLastExperience(), 0, realPreviousInteraction
         );
 
         historiqueInteraction.add(newInteraction);
@@ -164,9 +166,6 @@ public class AgentSequentiel extends Agent {
 
             interactionToUpdate = histo.remove(index);
             interactionToUpdate.setResult(result);
-            interactionToUpdate.setValence(
-                    motivation.getReward(interactionToUpdate.getAction() + "" + result)
-            );
 
             //On vérifie que l'intéraction n'existe pas déjà dans l'historique :
             // si c'est le cas, on ne fais que mettre à jour le poids
@@ -180,6 +179,7 @@ public class AgentSequentiel extends Agent {
                 }
             }
             histo.add(interactionToUpdate);
+            System.out.println("Mise à jour : " + interactionToUpdate.toString());
         }
     }
 }

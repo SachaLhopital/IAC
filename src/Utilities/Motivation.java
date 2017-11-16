@@ -3,10 +3,6 @@ package src.Utilities;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- *
- * @author PC
- */
 public class Motivation {
 
     protected HashMap<String, Integer> motivations;
@@ -30,7 +26,7 @@ public class Motivation {
 
     /***
      * Return the reward for the experiment given
-     * (ex : "11" for action 1 given 1 as result)
+     * (ex experiment : "11" for action 1 given 1 as result)
      * @return the reward of the experience
      */
     public int getReward(String experience) {

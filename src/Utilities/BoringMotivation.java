@@ -23,8 +23,11 @@ public class BoringMotivation extends Motivation {
         nbCorrectResult = n;
     }
 
+    /***
+     * Switch the current motivation system
+     */
     public void switchMotivation() {
-        System.out.println("SWITCH MOTIVATION");
+        System.out.println("Changement de motivation");
         motivations = motivations.equals(motivation1) ? motivation2 : motivation1;
         nbCorrectResult = 0;
     }

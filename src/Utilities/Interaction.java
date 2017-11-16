@@ -7,14 +7,12 @@ public class Interaction {
 
     private int action;
     private int result;
-    private int valence;
     private int weight;
     private Interaction previousInteraction;
 
-    public Interaction(int a, int r, int v, Interaction iPrec) {
+    public Interaction(int a, int r, Interaction iPrec) {
         action = a;
         result = r;
-        valence = v;
         weight = 1;
         previousInteraction = iPrec;
     }
@@ -22,20 +20,11 @@ public class Interaction {
     public Interaction(Interaction iToCopy) {
         action = iToCopy.getAction();
         result = iToCopy.result;
-        valence = iToCopy.valence;
         previousInteraction = iToCopy.getPreviousInteraction();
     }
 
     //////////////////////////////
     // Getters & Setters
-
-    public int getValence() {
-        return valence;
-    }
-
-    public void setValence(int v) {
-        valence = v;
-    }
 
     public Interaction getPreviousInteraction() {
         return previousInteraction;

@@ -6,12 +6,12 @@ import java.util.*;
 
 public class Agent {
 
-    private int bestExperience;
+    public List<String> historiqueExperiences;
+    public Motivation motivation;
 
     protected int lastExperience;
 
-    public List<String> historiqueExperiences;
-    public Motivation motivation;
+    private int bestExperience;
 
     public Agent(Motivation m) {
         historiqueExperiences = new ArrayList();
